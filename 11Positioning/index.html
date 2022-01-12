@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script src="./three.min.js" ></script>
+    <script src="./GLTFloader.js" ></script>
+    
+  
+ <div class="frame"></div> 
+ <h2 style='margin-left:750px'>Character</h2>
+ 
+    <script> 
+   
+    const frame=document.querySelector('.frame')
+     frame.style.marginLeft='700px'
+     frame.style.marginTop='100px'
+
+
+   
+    let camera;
+    let scene;
+    let render;
+    let geometry;
+    let material; 
+    let mesh;
+    let loader;
+
+    let action;
+    let personaje = new THREE.Object3D();
+
+
+    function inicializa(){
+     
+
+     //camera
+     camera=new THREE.PerspectiveCamera(40,window.innerWidth/innerHeight,1,1500)
+     camera.position.set(0.3,1,5)
+     
+     //escena
+    scene=new THREE.Scene()
+    scene.add(camera)
+
+    //GLTF ****************************************************************
+       
+     const loader=new THREE.GLTFLoader() 
+
+     loader.load('./wraith.glb',function(glb){
+      
+        mesh=glb.scene 
+        mesh.scale.set(0.13,0.03,0.15)
+        scene.add(mesh)
+     },function(xhr){
+         console.log((xhr/loaded/xhr.total*100)+"% loaded")
+     },function(error){
+         console.log('there are an error')
+     })
+
+    
+
+  
+    
+    
+    
+    //  geometry y material
+    //  geometry=new THREE.BoxGeometry(1,1,1)
+    //  material=new THREE.MeshBasicMaterial({
+    //      color:0x00ff00,
+    //  })
+     //unimos en variable materialmesh(geometry,material)
+     const materialmesh= new THREE.Mesh(geometry,material)
+    scene.add(materialmesh)
+
+      
+     //render 
+      render=new THREE.WebGLRenderer()
+      render.setClearColor('lightblue',1)
+      render.setSize(300,600)
+      frame.appendChild(render.domElement)
+    
+  
+      
+    
+        
+	 
+let luces=new THREE.DirectionalLight(0xffffff,1)//(color,intensidad)
+            
+     
+            luces.position.set(10,-4,0)//posicion 
+           scene.add(luces)
+            
+let luzAmbiente=new THREE.AmbientLight('white',1)
+           scene.add(luzAmbiente)
+          
+  
+               
+            //eventos 
+            
+            document.addEventListener('mousemove',()=>{
+            mesh.rotation.y+=0.2
+            
+            })
+
+  
+  
+      }
+  
+   inicializa()
+
+    function animando(){
+        requestAnimationFrame(animando)
+
+         //mesh.rotation.x+=0.012
+        mesh.rotation.y+=0.012
+
+        render.render(scene,camera)
+    
+    }
+    animando()
+       
+    
+    
+    </script>
+
+
+
+    
+</body>
+</html>

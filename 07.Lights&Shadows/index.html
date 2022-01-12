@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="./three.min.js"></script>
+    <script>
+
+    let camera;
+    let scene;
+    let rendering;
+    let geometry;
+    let geometry2;
+    let material; 
+    let material2
+    let mesh;
+    let mesh2;
+
+   
+
+
+    function init(){
+   
+     camera=new THREE.PerspectiveCamera(100,window.innerWidth/innerHeight,1,1500)
+     camera.position.set(-450,150,500)
+    
+     
+   
+     scene=new THREE.Scene()
+     scene.add(camera)
+
+    
+    
+   geometry=new THREE.BoxGeometry(
+        width=200,
+        height=200,
+        depth=200,
+        widthSegments=5,
+        heightSegments=5,
+        depthSegments=5
+    )
+
+	geometry2=new THREE.BoxGeometry(
+        width=200,
+        height=200,
+        depth=200,
+        widthSegments=5,
+        heightSegments=5,
+        depthSegments=5
+    )
+	
+   
+
+
+
+
+
+
+    material=new THREE.MeshPhongMaterial({
+         color:'yellow',
+         wireframe:false,
+         
+     })
+
+	material2=new THREE.MeshPhongMaterial({
+		color:'yellow',
+         wireframe:false,
+	})
+
+       mesh=new THREE.Mesh(geometry,material)
+	   mesh.castShadow=true
+    
+	   
+	   mesh2=new THREE.Mesh(geometry2,material2)
+	   mesh2.position.x=-230
+	   mesh2.position.y=-100
+	   mesh2.receiveShadow=true
+   
+
+
+     
+      scene.add(mesh)
+	  scene.add(mesh2)
+
+      //recolocamos la camera 
+
+  
+
+      /**************************************************************/
+
+       cuadrado=new THREE.Shape([
+         new THREE.Vector2(100,100),
+         new THREE.Vector2(400,100),
+         new THREE.Vector2(400,400),
+         new THREE.Vector2(100,400)
+     ])
+     //extruimos lageometry 
+     geometry3=new THREE.ExtrudeGeometry(
+          cuadrado, 
+          {bevelEnabled:true,//biselado
+           amount:20 //cantidad de extruccion en pixeles
+          
+          }
+      );
+
+      material3=new THREE.MeshNormalMaterial({
+         color:'yellow',
+         wireframe:false,
+       })
+   
+     
+     
+
+
+
+      
+      /************************************************************************/
+      
+      rendering=new THREE.WebGLRenderer()
+      rendering.setClearColor('black',1)
+	  rendering.shadowMap.enabled=true
+      rendering.setSize(window.innerWidth,window.innerHeight)
+      
+      document.body.appendChild(rendering.domElement)
+       
+      //Lights and shadows 
+    
+      //1.AmbientLight 
+      //2.DirectionalLight
+      //3.HemisphereLight
+      //4.PointLight
+      //5.SpotLight
+
+      //Lights
+
+		let lights=new THREE.DirectionalLight('green',2)//(color,intensidad)
+            
+		  lights.castShadow=true //
+		  lights.shadow.mapSize.width=3000//ancho de sombra
+		  lights.shadow.mapSize.height=3000//alto de sombra
+		  lights.position.set(40,40,0)//posicion 
+      lights.target.position.set(0,0,0)
+		  lights.shadow.camera.far=92500//alcanze de la sombra
+		  lights.shadow.camera.left=-2000
+		  lights.shadow.camera.right=1000
+		  lights.shadow.camera.top=1500
+		  lights.shadow.camera.bottom=-2000
+		  lights.shadow.darkness=0.2
+
+		  scene.add(lights)
+          
+		  let AmbientLight=new THREE.AmbientLight('yellow',0.3)
+		  scene.add(AmbientLight)
+		  
+          
+          scene.fog=new THREE.FogExp2('white',0.0014)
+
+
+    }
+    init()
+		
+
+
+
+   let clock=new THREE.Clock();
+
+    function animando(){
+        requestAnimationFrame(animando)
+    
+        let delta=clock.getDelta()
+       
+    
+        mesh.rotation.y+=delta*2
+        
+
+        rendering.render(scene,camera)
+    
+    }
+    animando()
+       
+    
+    
+    </script>
+
+
+
+    
+</body>
+</html>

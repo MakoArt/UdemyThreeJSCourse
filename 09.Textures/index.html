@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="./three.min.js"></script>
+    <script>
+
+    let camera;
+    let scene;
+    let rendering;
+    let geometry;
+    let material; 
+    let mesh;
+
+
+    function inicializa(){
+   
+     camera=new THREE.PerspectiveCamera(150,window.innerWidth/innerHeight,1,1500)
+     camera.position.set(80,0,280)
+   
+     scene=new THREE.Scene()
+     scene.add(camera)
+
+
+
+    
+     
+				
+      
+      rendering=new THREE.WebGLRenderer()
+      rendering.setClearColor('gray',1)
+      rendering.setSize(window.innerWidth,window.innerHeight)
+      
+      document.body.appendChild(rendering.domElement)
+       
+
+    }
+    inicializa()
+
+    function animating(){
+        requestAnimationFrame(animating)
+
+        mesh.position.x+=0.00
+        mesh.rotation.y+=0.012
+
+        rendering.render(scene,camera)
+    
+    }
+    animating()
+       
+    
+    
+    </script>
+
+
+
+    
+</body>
+</html>

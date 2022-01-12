@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="./three.min.js"></script>
+    <script>
+
+    let camera;
+    let scene;
+    let rendering;
+    let geometry;
+    let material; 
+    let mesh;
+
+    
+
+    function init(){
+     //Camera
+     camera=new THREE.PerspectiveCamera(100,window.innerWidth/innerHeight,1,1500)
+     camera.position.set(-450,150,500)
+    
+     
+     //Scene
+     scene=new THREE.Scene()
+     scene.add(camera)
+
+    
+    //Geometry
+   geometry=new THREE.BoxGeometry(
+        width=200,
+        height=200,
+        depth=200,
+        widthSegments=5,
+        heightSegments=5,
+        depthSegments=5
+    )
+
+    //Types of materials  
+
+    //1.MeshBasicMaterial 
+    //2.MeshNormalMaterial
+
+    //Material
+	  material=new THREE.MeshPhongMaterial({
+         color:'red',
+         wireframe:false,
+         
+     })
+
+      //Mesh
+       mesh=new THREE.Mesh(geometry,material)
+	   mesh.castShadow=true
+    
+	 
+
+       scene.add(mesh)
+
+
+      //Render
+      rendering=new THREE.WebGLRenderer()
+      rendering.setClearColor('blue',1)
+	  rendering.shadowMap.enabled=true
+      rendering.setSize(window.innerWidth,window.innerHeight)
+      
+      document.body.appendChild(rendering.domElement)
+       
+      
+
+
+    }
+    init()
+		
+
+
+
+
+ let clock=new THREE.Clock();
+
+    function animando(){
+        requestAnimationFrame(animando)
+    
+        let delta=clock.getDelta()
+       
+    
+        mesh.rotation.y+=delta*2
+        
+
+        rendering.render(scene,camera)
+    
+    }
+    animando()
+       
+    
+    
+    </script>
+
+
+
+    
+</body>
+</html>
